@@ -1,10 +1,11 @@
 import React from "react"
 import { useEffect } from "react"
 import { useState } from "react"
-import { Button, Container, Form } from "react-bootstrap"
+import { Alert, Button, Container, Form } from "react-bootstrap"
 
 const Register = () => {
   const [valid, setValid] = useState(false)
+  const [error, setError] = useState(null)
 
   const [values, setValues] = useState({
     name: "",
@@ -46,6 +47,32 @@ const Register = () => {
       passwordValid &&
       confirmPasswordValid
 
+    let errors = []
+    if (!nameValid && values.name.length > 0) {
+      errors.push("Name must be at least 2 characters ")
+    }
+    if (!surnameValid && values.surname.length > 0) {
+      errors.push("Surname must be at least 3 characters ")
+    }
+    if (!emailValid && values.email.length > 0) {
+      errors.push("Invalid Email")
+    }
+    if (!emailValid && values.email.length > 0) {
+      errors.push("Invalid Email")
+    }
+
+    if (!passwordValid && values.password.length > 0) {
+      errors.push("Password should be at least 8 characters")
+    }
+
+    if (!confirmPasswordValid && values.confirmPassword.length > 0) {
+      errors.push("Password should match")
+    }
+    if (errors.length > 0) {
+      setError(errors.join("\n"))
+    } else {
+      setError(null)
+    }
     console.log(`Form Valid: ${formValid}`)
 
     setValid(formValid)
@@ -69,6 +96,7 @@ const Register = () => {
         className="text-left 
       "
       >
+        {error && <Alert variant="danger">{error}</Alert>}
         <Form>
           <Form.Label className="mt-2">Name</Form.Label>
           <Form.Control
